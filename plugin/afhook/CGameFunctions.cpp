@@ -23,9 +23,9 @@ void __fastcall CGameFunctions::HandleText7(void* thisPointer, void* junk, const
 	}
 
 	m_fixCharacters = false;
-	strncpy(m_lastLine, text, TEXT_BUFFER);
+	strncpy_s(m_lastLine, text, TEXT_BUFFER);
 	m_lastLinePosition = 0;
-	bool result = m_resources->TranslateText(text, m_textBuffer, TEXT_BUFFER);
+	bool result = m_resources->TranslateText("0", text, m_textBuffer, TEXT_BUFFER);
 
 	if (result)
 	{
@@ -51,9 +51,9 @@ void __fastcall CGameFunctions::HandleText6(void* thisPointer, void* junk, const
 	}
 
 	m_fixCharacters = false;
-	strncpy(m_lastLine, text, TEXT_BUFFER);
+	strncpy_s(m_lastLine, text, TEXT_BUFFER);
 	m_lastLinePosition = 0;
-	bool result = m_resources->TranslateText(text, m_textBuffer, TEXT_BUFFER);
+	bool result = m_resources->TranslateText("0", text, m_textBuffer, TEXT_BUFFER);
 
 	if (result)
 	{
@@ -72,6 +72,18 @@ void __fastcall CGameFunctions::HandleText6(void* thisPointer, void* junk, const
 
 void __fastcall CGameFunctions::HandleText5(void* thisPointer, void* junk, const char* text, void* p1, void* p2, void* p3, void* p4, void* p5)
 {
+	//m_resources->Testlog("=== NEW TEXT ===");
+	// Log basic info
+	//char info[256];
+	//sprintf(info, "this=%p text=%p [%s]", thisPointer, text, text);
+	//m_resources->Testlog(info);
+	
+	const uint8_t* header = reinterpret_cast<const uint8_t*>(text) - 12;
+	const uint8_t* footer = reinterpret_cast<const uint8_t*>(text) + strlen(text) + 12;
+	
+	char messageId[6];
+	sprintf_s(messageId, "%02X%02X", header[0], footer[0]);
+
 	if (*text == '\x00' || (*text == '\x05' && *(text + 1) == '\x00'))
 	{
 		Orig_HandleText5(thisPointer, junk, text, p1, p2, p3, p4, p5);
@@ -79,9 +91,9 @@ void __fastcall CGameFunctions::HandleText5(void* thisPointer, void* junk, const
 	}
 
 	m_fixCharacters = false;
-	strncpy(m_lastLine, text, TEXT_BUFFER);
+	strncpy_s(m_lastLine, text, TEXT_BUFFER);
 	m_lastLinePosition = 0;
-	bool result = m_resources->TranslateText(text, m_textBuffer, TEXT_BUFFER);
+	bool result = m_resources->TranslateText(messageId, text, m_textBuffer, TEXT_BUFFER);
 
 	if (result)
 	{
@@ -107,9 +119,9 @@ void __fastcall CGameFunctions::HandleText3(void* thisPointer, void* junk, const
 	}
 
 	m_fixCharacters = false;
-	strncpy(m_lastLine, text, TEXT_BUFFER);
+	strncpy_s(m_lastLine, text, TEXT_BUFFER);
 	m_lastLinePosition = 0;
-	bool result = m_resources->TranslateText(text, m_textBuffer, TEXT_BUFFER);
+	bool result = m_resources->TranslateText("0", text, m_textBuffer, TEXT_BUFFER);
 
 	if (result)
 	{

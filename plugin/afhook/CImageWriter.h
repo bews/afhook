@@ -5,11 +5,6 @@
 #include "targetver.h"
 #include <windows.h>
 
-#include <png.h>
-
-#pragma comment(lib, "zlib.lib")
-#pragma comment(lib, "libpng16.lib")
-
 typedef unsigned char		byte;
 typedef unsigned short		word;
 typedef unsigned long		dword;

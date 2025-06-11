@@ -57,10 +57,10 @@ struct PackageImage {
 
 struct CompareCString
 {
-   bool operator()(char const *a, char const *b)
-   {
-      return strcmp(a, b) < 0;
-   }
+	bool operator()(const char* left, const char* right) const
+	{  // Note the const here
+		return strcmp(left, right) < 0;
+	}
 };
 
 struct ImageDimensions {
@@ -99,7 +99,7 @@ public:
 	bool IsModified() const { return m_modified; };
 
 	// Used by afhook
-	bool TranslateText(const char* original, char* buffer, int bufferSize);
+	bool TranslateText(const char* messageId, const char* original, char* buffer, int bufferSize);
 	bool TranslateUserInterface(const char* original, char* buffer, int bufferSize);
 	unsigned char* TranslateImage(const char* hash, void* imageData, ImageDimensions dimensions, INT32 depth, INT32 flags);
 
@@ -108,6 +108,7 @@ private:
 	std::map<UINT32, PackageText*> m_uiDatabase;
 	ImageMap m_imageDatabase;
 	TextLookupMap m_fastTextLookup;
+	TextLookupMap m_bodyTextLookup;
 	UINT32 m_nextTextId;
 	UINT32 m_nextUIId;
 	bool m_modified;

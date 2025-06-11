@@ -42,21 +42,60 @@ CResourceManager::~CResourceManager()
 		delete it->second;
 	}
 
+	for (TextLookupMap::iterator it = m_bodyTextLookup.begin(); it != m_bodyTextLookup.end(); it++)
+	{
+		// PackageText objects were deleted in first loop
+		it->second->clear();
+
+		delete it->second;
+	}
+
 	m_textDatabase.clear();
 	m_uiDatabase.clear();
 	m_imageDatabase.clear();
 	m_fastTextLookup.clear();
+	m_bodyTextLookup.clear();
 }
 
-bool CResourceManager::TranslateText(const char* original, char* buffer, int bufferSize)
+bool CResourceManager::TranslateText(const char* messageId, const char* original, char* buffer, int bufferSize)
 {
-	UINT32 originalLen = strlen(original);
+	std::string editedOriginal = "[";
+	editedOriginal += messageId ? messageId : "*";
+	editedOriginal += "] ";
+	editedOriginal += original;
 
-	TextLookupMap::const_iterator mp = m_fastTextLookup.find(originalLen);
+	// First, try exact match
+	const char* searchOriginal = editedOriginal.c_str();
+	UINT32 searchLen = (UINT32)editedOriginal.length();
 
+	bool foundEmpty = false;
+
+	TextLookupMap::const_iterator mp = m_fastTextLookup.find(searchLen);
 	if (mp != m_fastTextLookup.end())
 	{
 		for (std::vector<PackageText*>::const_iterator it = mp->second->begin(); it != mp->second->end(); it++)
+		{
+			if (strcmp((*it)->source, searchOriginal) == 0)
+			{
+				if ((*it)->translationLen > 0)
+				{
+					strncpy(buffer, (*it)->translation, bufferSize - 1);
+					buffer[bufferSize - 1] = '\x00';
+					return true;
+				}
+				else foundEmpty = true;
+			}
+		}
+	}
+
+	// Not found, now try wildcard match: ignore messageId
+	bool wildcardFound = false;
+	UINT32 bodyLen = (UINT32)strlen(original);
+
+	TextLookupMap::const_iterator bodyMp = m_bodyTextLookup.find(bodyLen);
+	if (bodyMp != m_bodyTextLookup.end())
+	{
+		for (std::vector<PackageText*>::const_iterator it = bodyMp->second->begin(); it != bodyMp->second->end(); it++)
 		{
 			if (strcmp((*it)->source, original) == 0)
 			{
@@ -64,42 +103,42 @@ bool CResourceManager::TranslateText(const char* original, char* buffer, int buf
 				{
 					strncpy(buffer, (*it)->translation, bufferSize - 1);
 					buffer[bufferSize - 1] = '\x00';
-				
-					return true;
+					wildcardFound = true;
+					break;
 				}
-
-				return false;
 			}
 		}
 	}
 
-	m_logger->WriteLine("New dialogue line found: ").WriteText(original);
-
-	PackageText* data = new PackageText;
-	data->sourceLen = originalLen;
-	data->translationLen = 0;
-	data->source = new char[data->sourceLen + 1];
-	data->translation = NULL;
-	strncpy(data->source, original, (data->sourceLen + 1));
-
-	m_textDatabase.insert(std::pair<UINT32, PackageText*>(m_nextTextId, data));
-	m_nextTextId++;
-	m_modified = true;
-
-	if (mp != m_fastTextLookup.end())
+	if (!foundEmpty)
 	{
-		mp->second->push_back(data);
+		// Log new dialogue line
+		m_logger->WriteLine("New dialogue line found: ").WriteText(editedOriginal.c_str());
+
+		PackageText* data = new PackageText;
+		data->sourceLen = (UINT32)editedOriginal.length();
+		data->translationLen = 0;
+		data->source = new char[data->sourceLen + 1];
+		data->translation = NULL;
+		strncpy(data->source, editedOriginal.c_str(), data->sourceLen + 1);
+
+		m_textDatabase.insert(std::pair<UINT32, PackageText*>(m_nextTextId, data));
+		m_nextTextId++;
+		m_modified = true;
+
+		if (mp != m_fastTextLookup.end())
+		{
+			mp->second->push_back(data);
+		}
+		else
+		{
+			std::vector<PackageText*>* vec = new std::vector<PackageText*>;
+			vec->push_back(data);
+			m_fastTextLookup.emplace(std::make_pair(data->sourceLen, vec));
+		}
 	}
-	else
-	{
-		std::vector<PackageText*>* vec = new std::vector<PackageText*>;
 
-		vec->push_back(data);
-
-		m_fastTextLookup.emplace(std::make_pair<int, std::vector<PackageText*>*>(originalLen, vec));
-	}
-
-	return false;
+	return wildcardFound;
 }
 
 bool CResourceManager::TranslateUserInterface(const char* original, char* buffer, int bufferSize)
@@ -173,7 +212,7 @@ unsigned char* CResourceManager::TranslateImage(const char* hash, void* imageDat
 
 	img->hash[40] = img->title[40] = '\x00';
 
-	m_imageDatabase.emplace(std::make_pair<const char*, PackageImage*>(img->hash, img));
+	m_imageDatabase.emplace(std::make_pair(img->hash, img));
 
 #ifdef AFHOOK_DEVMODE
 
@@ -397,10 +436,54 @@ void CResourceManager::LoadPackage(const std::wstring& filename)
 		else
 		{
 			std::vector<PackageText*>* vec = new std::vector<PackageText*>;
-
 			vec->push_back(it->second);
+			m_fastTextLookup.emplace(std::make_pair(it->second->sourceLen, vec));
+		}
 
-			m_fastTextLookup.emplace(std::make_pair<int, std::vector<PackageText*>*>(it->second->sourceLen, vec));
+		// New initialization for m_bodyTextLookup
+		// Extract just the text part (after "] ") from the source text
+		if (it->second->translationLen > 0)
+		{
+			std::string fullText(it->second->source, it->second->sourceLen); // Create string with exact length
+			size_t bracketPos = fullText.find("] ");
+
+			std::string bodyText;
+			if (bracketPos != std::string::npos && bracketPos + 2 < fullText.length())
+			{
+				bodyText = fullText.substr(bracketPos + 2);
+			}
+			else
+			{
+				bodyText = fullText; // Use full text if "] " not found
+			}
+
+			size_t bodyTextLen = bodyText.length();
+
+			if (bodyTextLen > 0)
+			{
+				PackageText* data = new PackageText;
+				data->sourceLen = static_cast<UINT32>(bodyTextLen);
+
+				// Allocate and copy the string
+				data->source = new char[bodyTextLen + 1];  // +1 for null terminator
+				strcpy(data->source, bodyText.c_str());
+
+				data->translationLen = it->second->translationLen;
+				data->translation = new char[data->translationLen + 1];
+				strcpy(data->translation, it->second->translation);
+
+				TextLookupMap::const_iterator bodyMp = m_bodyTextLookup.find(bodyTextLen);
+				if (bodyMp != m_bodyTextLookup.end())
+				{
+					bodyMp->second->push_back(data);
+				}
+				else
+				{
+					std::vector<PackageText*>* bodyVec = new std::vector<PackageText*>;
+					bodyVec->push_back(data);
+					m_bodyTextLookup.emplace(std::make_pair(bodyTextLen, bodyVec));
+				}
+			}
 		}
 	}
 
