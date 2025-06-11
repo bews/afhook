@@ -441,7 +441,7 @@ namespace AFEditor
                 textBox5.ReadOnly = true;
                 textBox6.ReadOnly = true;
 
-                int result = TxtExport.Import(resman, openFileDialog2.FileName, addsohAutomaticallyToolStripMenuItem.Checked);
+                int result = TxtExport.Import(resman, openFileDialog2.FileName, addsohAutomaticallyToolStripMenuItem.Checked, addLinesAutomaticallyToolStripMenuItem.Checked);
 
                 listView1.BeginUpdate();
                 listView1.ListViewItemSorter = null; // THIS THING MADE EVERYTHING SO FUCKING SLOW

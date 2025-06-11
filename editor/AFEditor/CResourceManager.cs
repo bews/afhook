@@ -156,7 +156,7 @@ namespace AFEditor
             writer.Write((UInt32)0);
             writer.Write((UInt32)0);
 
-            UInt32 textOffset = (UInt32) fs.Position;
+            UInt32 textOffset = (UInt32)fs.Position;
             UInt32 textCount = 0;
 
             foreach (KeyValuePair<UInt32, PackageText> kv in dialogue)
@@ -177,7 +177,7 @@ namespace AFEditor
 
                     byte[] encoded = Encoding.GetEncoding("SHIFT-JIS").GetBytes(dehumanized);
 
-                    UInt32 translatedLen = (UInt32) encoded.Length;
+                    UInt32 translatedLen = (UInt32)encoded.Length;
                     translatedLen++;
 
                     writer.Write(translatedLen);
@@ -234,7 +234,7 @@ namespace AFEditor
                     kv.Value.title = kv.Value.hash;
                 }
 
-                writer.Write((UInt32) (kv.Value.title.Length + 1));
+                writer.Write((UInt32)(kv.Value.title.Length + 1));
                 writer.Write(Encoding.GetEncoding("ASCII").GetBytes(kv.Value.title));
                 writer.Write('\x00');
 
@@ -269,50 +269,62 @@ namespace AFEditor
 
         public CResourceManager(string filename)
         {
-            FileStream fs = new FileStream(filename, FileMode.Open);
-
-            BinaryReader reader = new BinaryReader(fs);
-
-            UInt32 magic = reader.ReadUInt32();
-            UInt32 textOffset = reader.ReadUInt32();
-            UInt32 textCount = reader.ReadUInt32();
-            UInt32 charactersOffset = reader.ReadUInt32();
-            UInt32 charactersCount = reader.ReadUInt32();
-            UInt32 uiOffset = reader.ReadUInt32();
-            UInt32 uiCount = reader.ReadUInt32();
-            UInt32 imageOffset = reader.ReadUInt32();
-            UInt32 imageCount = reader.ReadUInt32();
-
-            if (magic != 0x8D120AB6)
+            // Read the entire file into memory at once
+            byte[] fileData = File.ReadAllBytes(filename);
+            using (MemoryStream ms = new MemoryStream(fileData))
+            using (BinaryReader reader = new BinaryReader(ms))
             {
-                return;
+                UInt32 magic = reader.ReadUInt32();
+                UInt32 textOffset = reader.ReadUInt32();
+                UInt32 textCount = reader.ReadUInt32();
+                UInt32 charactersOffset = reader.ReadUInt32();
+                UInt32 charactersCount = reader.ReadUInt32();
+                UInt32 uiOffset = reader.ReadUInt32();
+                UInt32 uiCount = reader.ReadUInt32();
+                UInt32 imageOffset = reader.ReadUInt32();
+                UInt32 imageCount = reader.ReadUInt32();
+
+                if (magic != 0x8D120AB6)
+                {
+                    return;
+                }
+
+                // Process sections sequentially
+                ProcessTextSection(reader, textOffset, textCount, dialogue);
+                ProcessTextSection(reader, uiOffset, uiCount, ui);
+                ProcessImageSection(reader, imageOffset, imageCount, images);
             }
+        }
 
-            fs.Seek(textOffset, SeekOrigin.Begin);
+        private void ProcessTextSection(BinaryReader reader, uint offset, uint count, Dictionary<uint, PackageText> dictionary)
+        {
+            if (count == 0) return;
 
-            for (uint i = 0; i < textCount; i++)
+            long originalPosition = reader.BaseStream.Position;
+            reader.BaseStream.Seek(offset, SeekOrigin.Begin);
+
+            var encoding = Encoding.GetEncoding("SHIFT-JIS");
+            dictionary.Clear();  // Clear existing entries
+
+            for (uint i = 0; i < count; i++)
             {
-                UInt32 id;
-                UInt32 sourceLen;
-                UInt32 translatedLen;
-
-                id = reader.ReadUInt32();
-                sourceLen = reader.ReadUInt32();
-                translatedLen = reader.ReadUInt32();
+                UInt32 id = reader.ReadUInt32();
+                UInt32 sourceLen = reader.ReadUInt32();
+                UInt32 translatedLen = reader.ReadUInt32();
 
                 if (sourceLen <= 1) continue;
 
-                PackageText pkg = new PackageText();
+                PackageText pkg = new PackageText
+                {
+                    source = reader.ReadBytes((int)sourceLen),
+                    sourceLen = sourceLen
+                };
 
-                pkg.source = reader.ReadBytes((int) sourceLen);
-                pkg.sourceLen = sourceLen;
-                pkg.sourceString = Encoding.GetEncoding("SHIFT-JIS").GetString(pkg.source);
-                pkg.sourceString = Humanize(pkg.sourceString);
+                pkg.sourceString = Humanize(encoding.GetString(pkg.source));
 
                 if (translatedLen > 1)
                 {
-                    pkg.translation = Encoding.GetEncoding("SHIFT-JIS").GetString(reader.ReadBytes((int) translatedLen - 1));
-                    pkg.translation = Humanize(pkg.translation);
+                    pkg.translation = Humanize(encoding.GetString(reader.ReadBytes((int)translatedLen - 1)));
                     reader.ReadByte();
                 }
                 else
@@ -320,71 +332,47 @@ namespace AFEditor
                     pkg.translation = "";
                 }
 
-                dialogue.Add(id, pkg);
+                dictionary[id] = pkg;
             }
 
-            fs.Seek(uiOffset, SeekOrigin.Begin);
+            reader.BaseStream.Seek(originalPosition, SeekOrigin.Begin);
+        }
 
-            for (uint i = 0; i < uiCount; i++)
+        private void ProcessImageSection(BinaryReader reader, uint offset, uint count, Dictionary<string, PackageImage> dictionary)
+        {
+            if (count == 0) return;
+
+            long originalPosition = reader.BaseStream.Position;
+            reader.BaseStream.Seek(offset, SeekOrigin.Begin);
+
+            var asciiEncoding = Encoding.ASCII;
+            dictionary.Clear();  // Clear existing entries
+
+            for (uint i = 0; i < count; i++)
             {
-                UInt32 id;
-                UInt32 sourceLen;
-                UInt32 translatedLen;
-
-                id = reader.ReadUInt32();
-                sourceLen = reader.ReadUInt32();
-                translatedLen = reader.ReadUInt32();
-
-                if (sourceLen <= 1) continue;
-
-                PackageText pkg = new PackageText();
-
-                pkg.source = reader.ReadBytes((int)sourceLen);
-                pkg.sourceLen = sourceLen;
-                pkg.sourceString = Encoding.GetEncoding("SHIFT-JIS").GetString(pkg.source);
-
-                if (translatedLen > 1)
+                PackageImage img = new PackageImage
                 {
-                    pkg.translation = Encoding.GetEncoding("SHIFT-JIS").GetString(reader.ReadBytes((int)translatedLen - 1));
-                    reader.ReadByte();
-                }
-                else
-                {
-                    pkg.translation = "";
-                }
+                    hash = asciiEncoding.GetString(reader.ReadBytes(40)).TrimEnd('\0')
+                };
 
-                ui.Add(id, pkg);
-            }
-
-            fs.Seek(imageOffset, SeekOrigin.Begin);
-
-            for (uint i = 0; i < imageCount; i++)
-            {
-                PackageImage img = new PackageImage();
-                UInt32 titleLen;
-
-                img.hash = Encoding.GetEncoding("ASCII").GetString(reader.ReadBytes(40));
-
-                titleLen = reader.ReadUInt32();
-
-                img.title = Encoding.GetEncoding("ASCII").GetString(reader.ReadBytes((int)titleLen - 1));
+                UInt32 titleLen = reader.ReadUInt32();
+                img.title = asciiEncoding.GetString(reader.ReadBytes((int)titleLen - 1));
                 reader.ReadByte();
                 img.width = reader.ReadInt16();
                 img.height = reader.ReadInt16();
                 img.flags = reader.ReadInt32();
                 img.depth = reader.ReadInt32();
-
                 img.replacementLen = reader.ReadUInt32();
 
                 if (img.replacementLen > 0)
                 {
-                    img.replacement = reader.ReadBytes((int) img.replacementLen);
+                    img.replacement = reader.ReadBytes((int)img.replacementLen);
                 }
 
-                images.Add(img.hash, img);
+                dictionary[img.hash] = img;
             }
 
-            fs.Close();
+            reader.BaseStream.Seek(originalPosition, SeekOrigin.Begin);
         }
     }
 }

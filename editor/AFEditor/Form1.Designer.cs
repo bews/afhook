@@ -53,6 +53,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.checkBoxReplaced = new System.Windows.Forms.CheckBox();
@@ -72,7 +73,7 @@
             this.savePackageAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addsohAutomaticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addLinesAutomaticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exporttxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,8 +88,8 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
-            this.button3 = new System.Windows.Forms.Button();
             this.saveFileDialog3 = new System.Windows.Forms.SaveFileDialog();
+            this.addsohAutomaticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -112,8 +113,9 @@
             this.English,
             this.Translated});
             this.listView1.FullRowSelect = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(8, 7);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(1005, 269);
@@ -150,7 +152,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(16, 33);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1033, 550);
@@ -163,9 +165,9 @@
             this.tabPage1.Controls.Add(this.textBox1);
             this.tabPage1.Controls.Add(this.listView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(1025, 521);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Dialogue";
@@ -175,7 +177,7 @@
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(8, 401);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
@@ -186,7 +188,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(8, 284);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -199,7 +201,7 @@
             this.tabPage3.Controls.Add(this.textBox5);
             this.tabPage3.Controls.Add(this.listView3);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(1025, 521);
             this.tabPage3.TabIndex = 2;
@@ -210,7 +212,7 @@
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(8, 401);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(4);
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
             this.textBox6.ReadOnly = true;
@@ -221,7 +223,7 @@
             // textBox5
             // 
             this.textBox5.Location = new System.Drawing.Point(8, 284);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(4);
             this.textBox5.Multiline = true;
             this.textBox5.Name = "textBox5";
             this.textBox5.ReadOnly = true;
@@ -236,8 +238,9 @@
             this.columnHeader7,
             this.columnHeader8});
             this.listView3.FullRowSelect = true;
+            this.listView3.HideSelection = false;
             this.listView3.Location = new System.Drawing.Point(8, 7);
-            this.listView3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listView3.Margin = new System.Windows.Forms.Padding(4);
             this.listView3.MultiSelect = false;
             this.listView3.Name = "listView3";
             this.listView3.Size = new System.Drawing.Size(1005, 269);
@@ -275,9 +278,9 @@
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.comboBox1);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Size = new System.Drawing.Size(1025, 521);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Images";
@@ -287,9 +290,9 @@
             // 
             this.groupBox3.Controls.Add(this.pictureBox2);
             this.groupBox3.Location = new System.Drawing.Point(503, 277);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox3.Size = new System.Drawing.Size(512, 234);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
@@ -298,7 +301,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Location = new System.Drawing.Point(8, 22);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(496, 204);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -309,9 +312,9 @@
             // 
             this.groupBox2.Controls.Add(this.pictureBox1);
             this.groupBox2.Location = new System.Drawing.Point(503, 42);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(512, 234);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
@@ -320,7 +323,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Location = new System.Drawing.Point(8, 23);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(496, 204);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -343,19 +346,29 @@
             this.groupBox1.Controls.Add(this.labelHash);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(8, 41);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(485, 470);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Image properties";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(13, 233);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(178, 28);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "Export replaced as PNG";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // button1
             // 
             this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(316, 197);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(161, 28);
             this.button1.TabIndex = 0;
@@ -367,7 +380,7 @@
             // 
             this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(13, 197);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(88, 28);
             this.button2.TabIndex = 2;
@@ -380,7 +393,7 @@
             this.checkBoxReplaced.AutoSize = true;
             this.checkBoxReplaced.Enabled = false;
             this.checkBoxReplaced.Location = new System.Drawing.Point(128, 158);
-            this.checkBoxReplaced.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxReplaced.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxReplaced.Name = "checkBoxReplaced";
             this.checkBoxReplaced.Size = new System.Drawing.Size(18, 17);
             this.checkBoxReplaced.TabIndex = 9;
@@ -399,7 +412,7 @@
             // textBoxTitle
             // 
             this.textBoxTitle.Location = new System.Drawing.Point(128, 118);
-            this.textBoxTitle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxTitle.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxTitle.Name = "textBoxTitle";
             this.textBoxTitle.ReadOnly = true;
             this.textBoxTitle.Size = new System.Drawing.Size(348, 22);
@@ -479,11 +492,13 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Enabled = false;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(8, 7);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(1005, 24);
             this.comboBox1.TabIndex = 0;
@@ -491,6 +506,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openPackageToolStripMenuItem,
             this.savePackageToolStripMenuItem,
@@ -499,8 +515,7 @@
             this.exitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1065, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1065, 30);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -509,7 +524,7 @@
             this.openPackageToolStripMenuItem.Name = "openPackageToolStripMenuItem";
             this.openPackageToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+O";
             this.openPackageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openPackageToolStripMenuItem.Size = new System.Drawing.Size(117, 24);
+            this.openPackageToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
             this.openPackageToolStripMenuItem.Text = "Open package";
             this.openPackageToolStripMenuItem.Click += new System.EventHandler(this.openClick);
             // 
@@ -518,14 +533,14 @@
             this.savePackageToolStripMenuItem.Name = "savePackageToolStripMenuItem";
             this.savePackageToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+S";
             this.savePackageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.savePackageToolStripMenuItem.Size = new System.Drawing.Size(112, 24);
+            this.savePackageToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
             this.savePackageToolStripMenuItem.Text = "Save package";
             this.savePackageToolStripMenuItem.Click += new System.EventHandler(this.savePackageToolStripMenuItem_Click);
             // 
             // savePackageAsToolStripMenuItem
             // 
             this.savePackageAsToolStripMenuItem.Name = "savePackageAsToolStripMenuItem";
-            this.savePackageAsToolStripMenuItem.Size = new System.Drawing.Size(130, 24);
+            this.savePackageAsToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             this.savePackageAsToolStripMenuItem.Text = "Save package as";
             this.savePackageAsToolStripMenuItem.Click += new System.EventHandler(this.savePackageAsToolStripMenuItem_Click);
             // 
@@ -534,42 +549,43 @@
             this.importExportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importtxtToolStripMenuItem,
             this.addsohAutomaticallyToolStripMenuItem,
+            this.addLinesAutomaticallyToolStripMenuItem,
             this.toolStripMenuItem2,
             this.exporttxtToolStripMenuItem});
             this.importExportToolStripMenuItem.Name = "importExportToolStripMenuItem";
-            this.importExportToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.importExportToolStripMenuItem.Size = new System.Drawing.Size(125, 26);
             this.importExportToolStripMenuItem.Text = "Import / Export";
             // 
             // importtxtToolStripMenuItem
             // 
             this.importtxtToolStripMenuItem.Name = "importtxtToolStripMenuItem";
-            this.importtxtToolStripMenuItem.Size = new System.Drawing.Size(237, 24);
+            this.importtxtToolStripMenuItem.Size = new System.Drawing.Size(255, 26);
             this.importtxtToolStripMenuItem.Text = "Import .txt";
             this.importtxtToolStripMenuItem.Click += new System.EventHandler(this.importtxtToolStripMenuItem_Click);
             // 
-            // addsohAutomaticallyToolStripMenuItem
+            // addLinesAutomaticallyToolStripMenuItem
             // 
-            this.addsohAutomaticallyToolStripMenuItem.CheckOnClick = true;
-            this.addsohAutomaticallyToolStripMenuItem.Name = "addsohAutomaticallyToolStripMenuItem";
-            this.addsohAutomaticallyToolStripMenuItem.Size = new System.Drawing.Size(237, 24);
-            this.addsohAutomaticallyToolStripMenuItem.Text = "Add {soh} automatically";
+            this.addLinesAutomaticallyToolStripMenuItem.CheckOnClick = true;
+            this.addLinesAutomaticallyToolStripMenuItem.Name = "addLinesAutomaticallyToolStripMenuItem";
+            this.addLinesAutomaticallyToolStripMenuItem.Size = new System.Drawing.Size(255, 26);
+            this.addLinesAutomaticallyToolStripMenuItem.Text = "Add missing lines to pkg";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(234, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(252, 6);
             // 
             // exporttxtToolStripMenuItem
             // 
             this.exporttxtToolStripMenuItem.Name = "exporttxtToolStripMenuItem";
-            this.exporttxtToolStripMenuItem.Size = new System.Drawing.Size(237, 24);
+            this.exporttxtToolStripMenuItem.Size = new System.Drawing.Size(255, 26);
             this.exporttxtToolStripMenuItem.Text = "Export .txt";
             this.exporttxtToolStripMenuItem.Click += new System.EventHandler(this.exporttxtToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(45, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(47, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -595,12 +611,13 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 600);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 599);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1065, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(1065, 26);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
@@ -613,6 +630,7 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
@@ -627,6 +645,7 @@
             // 
             // contextMenuStrip2
             // 
+            this.contextMenuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem3});
             this.contextMenuStrip2.Name = "contextMenuStrip1";
@@ -644,20 +663,17 @@
             this.openFileDialog3.Filter = "PNG files|*.png|JPEG files|*.jpg";
             this.openFileDialog3.Title = "Select image";
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(13, 233);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(178, 28);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "Export replaced as PNG";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // saveFileDialog3
             // 
             this.saveFileDialog3.DefaultExt = "png";
             this.saveFileDialog3.Filter = "PNG images|*.png|All files|*.*";
+            // 
+            // addsohAutomaticallyToolStripMenuItem
+            // 
+            this.addsohAutomaticallyToolStripMenuItem.CheckOnClick = true;
+            this.addsohAutomaticallyToolStripMenuItem.Name = "addsohAutomaticallyToolStripMenuItem";
+            this.addsohAutomaticallyToolStripMenuItem.Size = new System.Drawing.Size(255, 26);
+            this.addsohAutomaticallyToolStripMenuItem.Text = "Add {soh} automatically";
             // 
             // Form1
             // 
@@ -670,7 +686,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
@@ -732,7 +748,7 @@
         private System.Windows.Forms.ToolStripMenuItem savePackageAsToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.ToolStripMenuItem addsohAutomaticallyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addLinesAutomaticallyToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
@@ -759,6 +775,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.SaveFileDialog saveFileDialog3;
+        private System.Windows.Forms.ToolStripMenuItem addsohAutomaticallyToolStripMenuItem;
     }
 }
 
